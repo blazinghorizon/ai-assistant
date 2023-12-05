@@ -1,3 +1,4 @@
+from typing import Any
 import stanza
 from utils.decorators import free_cache
 
@@ -9,6 +10,15 @@ class SyntaxAnalyzer:
             use_gpu=True,
             package='syntagrus'
         ) 
+
+    def __call__(self, text: str) -> list[str] | None:
+        sentences = None
+        try:
+            sentences = self.get_sentences(self.get_doc(text), normalize=False)
+        except:
+            print(f'[ERROR] [SA] [{text}]')
+
+        return sentences
 
     def get_doc(self, text: str) -> stanza.Document:
         """Сегментация и синтаксический анализ текста
@@ -51,7 +61,7 @@ class SyntaxAnalyzer:
                 else:
                     cur_attr = 'text'
 
-                if 'upos' in dir(token) and token.upos in upos or upos == []:
+                if ('upos' in dir(token) and token.upos in upos) or upos == []:
                     words.append(getattr(token, cur_attr))
 
             sentences.append(' '.join(words))

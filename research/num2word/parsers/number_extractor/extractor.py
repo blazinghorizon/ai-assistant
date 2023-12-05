@@ -151,5 +151,5 @@ class NumberExtractor(Extractor):
             else:
                 return self.fix_text(new_text)
         else:
-            return None
+            raise ValueError
 
