@@ -161,24 +161,27 @@ class LentaParser:
 
     async def _producer(self):
         for date in self.dates_countdown:
-            news_page_url = f"{self._endpoint}/{date}"
-
             try:
-                html = await asyncio.create_task(self.fetch(news_page_url))
-            except aiohttp.ClientResponseError:
-                logger.exception(f"Cannot fetch {news_page_url}")
-            except aiohttp.ClientConnectionError:
-                logger.exception(f"Cannot fetch {news_page_url}")
-            else:
-                n_proccessed_news = await self._fetch_all_news_on_page(html)
+                news_page_url = f"{self._endpoint}/{date}"
 
-                if n_proccessed_news == 0:
-                    logger.info(f"News not found at {news_page_url}.")
+                try:
+                    html = await asyncio.create_task(self.fetch(news_page_url))
+                except aiohttp.ClientResponseError:
+                    logger.exception(f"Cannot fetch {news_page_url}")
+                except aiohttp.ClientConnectionError:
+                    logger.exception(f"Cannot fetch {news_page_url}")
+                else:
+                    n_proccessed_news = await self._fetch_all_news_on_page(html)
 
-                logger.info(
-                    f"{news_page_url} processed ({n_proccessed_news} news). "
-                    f"{self._n_downloaded} news saved totally."
-                )
+                    if n_proccessed_news == 0:
+                        logger.info(f"News not found at {news_page_url}.")
+
+                    logger.info(
+                        f"{news_page_url} processed ({n_proccessed_news} news). "
+                        f"{self._n_downloaded} news saved totally."
+                    )
+            except:
+                continue
 
     async def run(self):
         try:

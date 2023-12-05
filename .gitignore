@@ -1,6 +1,6 @@
 # project .gitignore
-.csv
-.xlsx
+*.csv
+*.xlsx
 
 
 # Byte-compiled / optimized / DLL files
