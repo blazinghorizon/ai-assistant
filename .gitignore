@@ -1,3 +1,11 @@
+# project .gitignore
+# data files
+*.csv
+*.xlsx
+# nohup logs
+nohup.out
+
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
